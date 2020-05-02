@@ -7,9 +7,25 @@ describe ED25519::HD do
       keys.key.should eq("2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7")
       keys.chain_code.should eq("90046a93de5380a72b5e45010748567d5ea02bbf6522f979e05c0d8d8ca9fffb")
     end
-    it "should be valid for vector path" do 
+    it "should be valid for vector path" do
       vector_1.vectors.each do |v|
         keys = KeyRing.derive_path(v.path, vector_1.seed)
+        keys.key.should eq(v.key)
+        keys.chain_code.should eq(v.chain_code)
+        KeyRing.get_public_key(v.key).should eq(v.public_key)
+      end
+    end
+  end
+
+  describe "Vector 2" do
+    it "should have valid keys for vector 2 seed hex" do
+      keys = KeyRing.get_master_key_from_seed(vector_2.seed)
+      keys.key.should eq("171cb88b1b3c1db25add599712e36245d75bc65a1a5c9e18d76f9f2b1eab4012")
+      keys.chain_code.should eq("ef70a74db9c3a5af931b5fe73ed8e1a53464133654fd55e7a66f8570b8e33c3b")
+    end
+    it "should be valid for vector path" do
+      vector_2.vectors.each do |v|
+        keys = KeyRing.derive_path(v.path, vector_2.seed)
         keys.key.should eq(v.key)
         keys.chain_code.should eq(v.chain_code)
         KeyRing.get_public_key(v.key).should eq(v.public_key)
