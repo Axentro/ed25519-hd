@@ -1,0 +1,17 @@
+name: ed25519-hd
+version: 0.1.0
+
+authors:
+  - Kingsley Hendrickse <kingsley.hendrickse@gmail.com>
+
+dependencies:
+  monocypher:
+    github: sushichain/monocypher.cr
+   
+development_dependencies:
+    ameba:
+      github: veelenga/ameba
+
+crystal: 0.34.0
+
+license: MIT
