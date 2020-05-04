@@ -4,6 +4,7 @@ module ED25519::HD
   ED25519_CURVE = "ed25519 seed"
 
   HARDENED_OFFSET = 0x80000000
+  PATH_REGEX      = /^(m\/)?(\d+'?\/)*\d+'?$/
 
   struct Keys
     getter private_key : String
@@ -28,32 +29,32 @@ module ED25519::HD
     end
 
     def self.ckd_priv(keys : Keys, index : Int32) : Keys
-      seed = Slice(UInt8).new(37)
-      seed[1..32].copy_from(keys.private_key.hexbytes)
-      seed[0] = 0x00
-      seed[33] = index.to_u8
-      get_keys(seed, keys.chain_code.hexbytes)
+      seed = IO::Memory.new(37)
+      seed.write_byte(0x00)
+      seed.write_utf8(keys.private_key.hexbytes)
+      seed.write_bytes(index.to_u32 + HARDENED_OFFSET, IO::ByteFormat::BigEndian)
+      get_keys(seed.to_slice, keys.chain_code.hexbytes)
     end
 
     def self.get_public_key(private_key : String, with_zero_byte : Bool = true) : String
       secret_key = Crypto::SecretKey.new(private_key)
       bytes = Crypto::Ed25519PublicSigningKey.new(secret: secret_key).to_slice
       if with_zero_byte
-        key = Slice(UInt8).new(33)
-        key[0] = 0x00
-        key[1..32].copy_from(bytes)
-        key.hexstring
+        key = IO::Memory.new(33)
+        key.write_byte(0x00)
+        key.write_utf8(bytes)
+        key.to_slice.hexstring
       else
         bytes.hexstring
       end
     end
 
-    def self.is_valid_path(path : String) : Bool
-      false
-    end
-
     def self.derive_path(path : String, seed : String) : Keys
-      Keys.new("", "")
+      raise "Invalid derivation path. Expected BIP32 format" if PATH_REGEX.match(path).nil?
+      master_keys = get_master_key_from_seed(seed)
+      segments = path.gsub("'", "").split("/")[1..-1].map { |v| v.to_i }.reduce(master_keys) { |parent_keys, segment|
+        ckd_priv(parent_keys, segment)
+      }
     end
   end
 end
