@@ -35,8 +35,15 @@ module ED25519::HD
       seed[0] = 0x00
       seed[33] = index.to_u8
 
-      puts seed.hexstring
-      Crypto.get_keys(seed.hexstring, keys.chain_code)
+      digest = uninitialized UInt8[64]
+      key = keys.chain_code.hexbytes
+      message = seed
+      LibMonocypher.hmac_sha512(digest, key, key.bytesize, message, message.bytesize)
+      private_key = digest.to_slice[0, 32].hexstring
+      chain_code = digest.to_slice[32, 32].hexstring
+      Keys.new(private_key, chain_code)
+
+      # Crypto.get_keys(seed.hexstring, keys.chain_code)
     end
 
     def self.get_public_key(private_key : String) : String
