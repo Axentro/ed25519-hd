@@ -4,7 +4,10 @@
 
 This provides [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) specification support. This can be used to generate a master keypair and child public/private keypairs from a secure seed. 
 
-It is based on Hierarchical Deterministic Wallets specified in [BIP-0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) and Multi-Account Hierarchy for Deterministic Wallets specified in [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)
+It is based on:
+
+  * Hierarchical Deterministic Wallets [BIP-0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) 
+  * Multi-Account Hierarchy for Deterministic Wallets [BIP-0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)
 
 ## Installation
 
