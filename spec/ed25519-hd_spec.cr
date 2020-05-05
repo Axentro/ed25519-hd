@@ -9,7 +9,7 @@ describe ED25519::HD do
     end
     it "should be valid for vector path" do
       vector_1.vectors.each do |v|
-        keys = KeyRing.derive_path(v.path, vector_1.seed)
+        keys = KeyRing.derive_path(v.path, vector_1.seed, HARDENED_BITCOIN)
         keys.private_key.should eq(v.key)
         keys.chain_code.should eq(v.chain_code)
         KeyRing.get_public_key(v.key).should eq(v.public_key)
@@ -19,7 +19,7 @@ describe ED25519::HD do
 
   it "should get a child private key" do
     master_keys = KeyRing.get_master_key_from_seed(vector_1.seed)
-    child_keys = KeyRing.ckd_priv(master_keys, 1)
+    child_keys = KeyRing.ckd_priv(master_keys, 1, HARDENED_BITCOIN)
     child_keys.private_key.should eq("ec285aca282cde2c5bf7243fb6533280a4e50b1b81497c99dd44516b7d25f0c1")
     child_keys.chain_code.should eq("bf4de1e4e4d07c4aff77aad54df5161ad0e763624b25d2c28c0070348a4cc3bc")
   end
@@ -42,7 +42,7 @@ describe ED25519::HD do
     end
     it "should be valid for vector path" do
       vector_2.vectors.each do |v|
-        keys = KeyRing.derive_path(v.path, vector_2.seed)
+        keys = KeyRing.derive_path(v.path, vector_2.seed, HARDENED_BITCOIN)
         keys.private_key.should eq(v.key)
         keys.chain_code.should eq(v.chain_code)
         KeyRing.get_public_key(v.key).should eq(v.public_key)

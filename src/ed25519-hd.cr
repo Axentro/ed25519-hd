@@ -3,8 +3,10 @@ require "monocypher"
 module ED25519::HD
   ED25519_CURVE = "ed25519 seed"
 
-  HARDENED_OFFSET = 0x80000000
-  PATH_REGEX      = /^(m\/)?(\d+'?\/)*\d+'?$/
+  HARDENED_TESTNET = 0x80000001
+  HARDENED_BITCOIN = 0x80000000
+  HARDENED_SUSHI   = 0x80000276
+  PATH_REGEX       = /^(m\/)?(\d+'?\/)*\d+'?$/
 
   struct Keys
     getter private_key : String
@@ -28,11 +30,11 @@ module ED25519::HD
       get_keys(seed.hexbytes, ED25519_CURVE.to_slice)
     end
 
-    def self.ckd_priv(keys : Keys, index : Int32) : Keys
+    def self.ckd_priv(keys : Keys, index : Int32, hardened_offset : Int64 = HARDENED_TESTNET) : Keys
       seed = IO::Memory.new(37)
       seed.write_byte(0x00)
       seed.write_utf8(keys.private_key.hexbytes)
-      seed.write_bytes(index.to_u32 + HARDENED_OFFSET, IO::ByteFormat::BigEndian)
+      seed.write_bytes(index.to_u32 + hardened_offset, IO::ByteFormat::BigEndian)
       get_keys(seed.to_slice, keys.chain_code.hexbytes)
     end
 
@@ -49,11 +51,11 @@ module ED25519::HD
       end
     end
 
-    def self.derive_path(path : String, seed : String) : Keys
+    def self.derive_path(path : String, seed : String, hardened_offset : Int64 = HARDENED_TESTNET) : Keys
       raise "Invalid derivation path. Expected BIP32 format" if PATH_REGEX.match(path).nil?
       master_keys = get_master_key_from_seed(seed)
       segments = path.gsub("'", "").split("/")[1..-1].map { |v| v.to_i }.reduce(master_keys) { |parent_keys, segment|
-        ckd_priv(parent_keys, segment)
+        ckd_priv(parent_keys, segment, hardened_offset)
       }
     end
   end
