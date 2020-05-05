@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/SushiChain/ed25519-hd.svg?branch=master)](https://travis-ci.org/SushiChain/ed25519-hd)
 
-This provides [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) specification support. This can be used to generate a master keypair and child public/private keypairs from a secure seed. 
+This provides [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) specification support. 
+
+This can be used to generate a master keypair and child public/private keypairs from a secure seed. 
 
 It is based on:
 
