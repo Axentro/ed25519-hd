@@ -1,6 +1,6 @@
 # ed25519-hd
 
-[![Build Status](https://travis-ci.org/SushiChain/ed25519-hd.svg?branch=master)](https://travis-ci.org/SushiChain/ed25519-hd)
+[![Build Status](https://travis-ci.org/Axentro/ed25519-hd.svg?branch=master)](https://travis-ci.org/Axentro/ed25519-hd)
 
 This provides [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) specification support. 
 
@@ -18,7 +18,7 @@ It is based on:
    ```yaml
    dependencies:
      ed25519-hd:
-       github: sushichain/ed25519-hd
+       github: axentro/ed25519-hd
    ```
 
 2. Run `shards install`
@@ -41,7 +41,7 @@ KeyRing.get_public_key(keys.private_key) # 008c8a13df77a28f3445213a0f432fde644ac
 
 ## Contributing
 
-1. Fork it (<https://github.com/sushichain/ed25519-hd/fork>)
+1. Fork it (<https://github.com/axentro/ed25519-hd/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
