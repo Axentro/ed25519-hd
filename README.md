@@ -1,6 +1,6 @@
 # ed25519-hd
 
-[![Build Status](https://travis-ci.org/Axentro/ed25519-hd.svg?branch=master)](https://travis-ci.org/Axentro/ed25519-hd)
+[![Linux CI](https://github.com/Axentro/ed25519-hd/actions/workflows/linux-ci.yml/badge.svg)](https://github.com/Axentro/ed25519-hd/actions/workflows/linux-ci.yml)
 
 This provides [SLIP-0010](https://github.com/satoshilabs/slips/blob/master/slip-0010.md) specification support. 
 

@@ -54,7 +54,7 @@ module ED25519::HD
     def self.derive_path(path : String, seed : String, hardened_offset : Int64 = HARDENED_TESTNET) : Keys
       raise "Invalid derivation path. Expected BIP32 format" if PATH_REGEX.match(path).nil?
       master_keys = get_master_key_from_seed(seed)
-      path.gsub("'", "").split("/")[1..-1].map { |v| v.to_i }.reduce(master_keys) { |parent_keys, segment|
+      path.gsub("'", "").split("/")[1..-1].map(&.to_i).reduce(master_keys) { |parent_keys, segment|
         ckd_priv(parent_keys, segment, hardened_offset)
       }
     end
